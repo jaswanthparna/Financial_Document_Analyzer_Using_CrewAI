@@ -1,16 +1,33 @@
-Financial Document Analyzer API Documentation
-Overview
-The Financial Document Analyzer API provides AI-powered analysis of financial documents (PDFs), delivering financial metrics, investment recommendations, risk assessments, and market insights. Built with FastAPI, it supports both immediate and queued analysis using Gemini AI, Celery, and PostgreSQL.
-Base URL
+# 📘 Financial Document Analyzer API Documentation
+
+## 🔎 Overview
+The **Financial Document Analyzer API** provides **AI-powered analysis of financial documents (PDFs)**, delivering:
+
+- 📊 Financial metrics  
+- 💡 Investment recommendations  
+- ⚠️ Risk assessments  
+- 🌍 Market insights  
+
+The API is built with **FastAPI**, uses **Gemini AI** for intelligence, **Celery + Redis** for asynchronous processing, and **PostgreSQL** for persistent storage.  
+
+---
+
+## 🌐 Base URL
 http://localhost:8000
-Authentication
-No authentication is currently required. All endpoints are publicly accessible.
-Endpoints
-GET /
-Description: Health check and API information.Response:  
 
-200 OK: API status and version information.
+## 🔐 Authentication
+> **No authentication required** – all endpoints are publicly accessible.  
+(Pluggable auth can be added for production deployments.)
 
+---
+
+## 📡 Endpoints
+
+1️⃣ `GET /`
+**Description:** Health check & API information.  
+
+**Response – 200 OK**  
+```json
 {
   "message": "AI Financial Document Analyzer API",
   "version": "1.0.0",
@@ -18,10 +35,11 @@ Description: Health check and API information.Response:
   "timestamp": "2025-08-31T21:44:00.123456Z"
 }
 
-GET /health
-Description: System health check for database and AI services.Response:  
+2️⃣ GET /health
 
-200 OK: Health status of services.
+Description: System health check for database and AI services.
+
+Response – 200 Healthy
 
 {
   "status": "healthy",
@@ -31,7 +49,7 @@ Description: System health check for database and AI services.Response:
 }
 
 
-200 Unhealthy: If services are unavailable.
+Response – 200 Unhealthy
 
 {
   "status": "unhealthy",
@@ -39,12 +57,19 @@ Description: System health check for database and AI services.Response:
   "timestamp": "2025-08-31T21:44:00.123456Z"
 }
 
-POST /analyze
-Description: Queues a financial document for comprehensive AI analysis using Celery.Parameters:  
+3️⃣ POST /analyze
 
-file (file, required): PDF financial document.  
-query (string, optional): Analysis query (default: "Analyze this financial document for investment insights").Response:  
-200 OK: Task queued successfully.
+Description: Queues a financial document for comprehensive AI analysis (async, Celery).
+
+Parameters:
+
+file (PDF, required) – Financial document
+
+query (string, optional) – Custom analysis query
+
+Default: "Analyze this financial document for investment insights"
+
+Response – 200 OK
 
 {
   "status": "queued",
@@ -54,18 +79,25 @@ query (string, optional): Analysis query (default: "Analyze this financial docum
 }
 
 
-400 Bad Request: Invalid file type.  
-500 Internal Server Error: Analysis failure.
+Errors:
 
-Example:  
+400 – Invalid file type
+
+500 – Analysis failure
+
+Example:
+
 curl -X POST "http://localhost:8000/analyze" \
   -F "file=@sample.pdf" \
   -F "query=Analyze for investment insights"
 
-POST /analyze-fast
-Description: Performs immediate financial document analysis (synchronous).Parameters: Same as /analyze.Response:  
+4️⃣ POST /analyze-fast
 
-200 OK: Analysis results.
+Description: Performs immediate AI analysis (synchronous).
+
+Parameters: Same as /analyze.
+
+Response – 200 OK
 
 {
   "status": "completed",
@@ -105,14 +137,21 @@ Description: Performs immediate financial document analysis (synchronous).Parame
 }
 
 
-400 Bad Request: Invalid file type.  
-500 Internal Server Error: Analysis failure.
+Errors:
 
-GET /analysis/{task_id}
-Description: Retrieves the status and results of a queued analysis.Parameters:  
+400 – Invalid file type
 
-task_id (string, required): Unique task identifier.Response:  
-200 OK: Analysis status and results (if completed).
+500 – Analysis failure
+
+5️⃣ GET /analysis/{task_id}
+
+Description: Retrieves status & results of a queued analysis.
+
+Parameters:
+
+task_id (string, required)
+
+Response – 200 OK
 
 {
   "task_id": "123e4567-e89b-12d3-a456-426614174000",
@@ -126,14 +165,21 @@ task_id (string, required): Unique task identifier.Response:
 }
 
 
-404 Not Found: Analysis not found.  
-500 Internal Server Error: Server error.
+Errors:
 
-GET /analyses
-Description: Retrieves recent analysis records (default: last 10).Parameters:  
+404 – Task not found
 
-limit (integer, optional): Number of records to return (default: 10).Response:  
-200 OK: List of recent analyses.
+500 – Server error
+
+6️⃣ GET /analyses
+
+Description: Retrieves recent analysis records.
+
+Parameters:
+
+limit (int, optional) – Number of records (default: 10)
+
+Response – 200 OK
 
 {
   "analyses": [
@@ -147,27 +193,28 @@ limit (integer, optional): Number of records to return (default: 10).Response:
   "total": 1
 }
 
+7️⃣ DELETE /analysis/{task_id}
 
-500 Internal Server Error: Server error.
+Description: Deletes an analysis record.
 
-DELETE /analysis/{task_id}
-Description: Deletes an analysis record.Parameters:  
-
-task_id (string, required): Unique task identifier.Response:  
-200 OK: Deletion confirmation.
+Response – 200 OK
 
 {
   "message": "Analysis 123e4567-e89b-12d3-a456-426614174000 deleted successfully"
 }
 
 
-404 Not Found: Analysis not found.  
-500 Internal Server Error: Server error.
+Errors:
 
-GET /stats
-Description: Retrieves system statistics (e.g., total analyses, success rate).Response:  
+404 – Task not found
 
-200 OK: System statistics.
+500 – Server error
+
+8️⃣ GET /stats
+
+Description: Retrieves system statistics.
+
+Response – 200 OK
 
 {
   "total_analyses": 10,
@@ -176,36 +223,33 @@ Description: Retrieves system statistics (e.g., total analyses, success rate).Re
   "success_rate": "80.0%"
 }
 
+🚨 Error Codes
 
-500 Internal Server Error: Server error.
+400 Bad Request – Invalid input (e.g., non-PDF file)
 
-Error Codes
+404 Not Found – Resource not found (invalid task_id)
 
-400 Bad Request: Invalid input (e.g., non-PDF file).  
-404 Not Found: Resource not found (e.g., invalid task_id).  
-500 Internal Server Error: Unexpected server error.
+500 Internal Server Error – Unexpected system failure
 
-Example Workflow
+🔄 Example Workflow
 
-Queue Analysis:  
+Queue Analysis
+
 curl -X POST "http://localhost:8000/analyze" \
   -F "file=@sample.pdf" \
   -F "query=Analyze for investment insights"
 
-Response: {"status": "queued", "task_id": "123e4567-e89b-12d3-a456-426614174000", ...}
 
-Check Status:  
+✅ Response:
+
+{"status": "queued", "task_id": "123e4567-e89b-12d3-a456-426614174000"}
+
+
+Check Status
+
 curl "http://localhost:8000/analysis/123e4567-e89b-12d3-a456-426614174000"
 
-Response: {"status": "completed", "result": {...}, ...}
 
-View Recent Analyses:  
+View Recent Analyses
+
 curl "http://localhost:8000/analyses?limit=5"
-
-
-
-Notes
-
-The API uses Celery for asynchronous processing (/analyze) and supports immediate analysis (/analyze-fast).  
-Ensure Redis, PostgreSQL, and API keys (GEMINI_API_KEY, SERPER_API_KEY) are configured in .env.  
-Access interactive documentation at /docs (FastAPI Swagger UI).
