@@ -1,0 +1,53 @@
+# Core Framework
+fastapi
+uvicorn[standard]
+streamlit
+
+# Database
+sqlalchemy
+psycopg2-binary
+alembic
+
+# Task Queue
+celery
+redis
+
+# AI and CrewAI
+crewai
+crewai-tools
+google-generativeai
+
+# PDF Processing
+pypdf
+
+# Data Processing
+pandas
+numpy
+plotly
+
+# Environment and Config
+python-dotenv
+pydantic
+pyyaml
+
+# File Upload and Validation
+python-multipart
+
+# HTTP Requests
+requests
+
+# Visualization
+matplotlib
+seaborn
+
+# Logging and Monitoring
+structlog
+
+# Development Tools
+pytest
+pytest-asyncio
+black
+flake8
+
+# Type Hints
+typing-extensions

@@ -1,0 +1,29 @@
+analyze_financial_document_task:
+  description: >
+    Perform comprehensive AI-powered financial analysis of the document at {file_path} 
+    addressing the user query: {query}. Extract detailed financial metrics, trends, 
+    and insights using advanced AI processing.
+  expected_output: >
+    A comprehensive JSON object with extracted financial metrics including revenue, 
+    net income, cash flow, profitability ratios, growth trends, strengths, 
+    weaknesses, and identified anomalies or notable patterns.
+
+investment_analysis_task:
+  description: >
+    Develop detailed investment recommendations based on the financial analysis of {file_path} 
+    and user query: {query}. Integrate real-time market data and AI-powered insights 
+    to provide actionable investment advice.
+  expected_output: >
+    A JSON object with specific investment recommendations including action items,
+    target assets, detailed rationale, risk assessments, confidence levels,
+    investment horizons, and market context integration.
+
+risk_assessment_task:
+  description: >
+    Conduct comprehensive risk analysis of the document at {file_path} for user query: {query}. 
+    Evaluate financial, operational, market, and strategic risks using AI analysis 
+    and current market conditions.
+  expected_output: >
+    A detailed JSON object with categorized risks including financial leverage risks,
+    market volatility risks, operational challenges, regulatory risks, competitive threats,
+    risk scores, mitigation strategies, and stress test scenarios.
