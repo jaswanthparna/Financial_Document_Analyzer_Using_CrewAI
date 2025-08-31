@@ -93,3 +93,11 @@ API Example (for integration):
 POST /analyze or /analyze-fast with file and query.
 
 GET /analysis/{task_id} for status/results.
+
+Screenshot:
+
+![alt text](<Screenshot 2025-08-31 200838.png>)
+
+![alt text](<Screenshot 2025-08-31 210305.png>)
+
+![alt text](<Screenshot 2025-08-31 210347.png>)
